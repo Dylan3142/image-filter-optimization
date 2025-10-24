@@ -6,13 +6,29 @@ CXX	=g++
 ## Use our standard compiler flags for the course...
 ## You can try changing these flags to improve performance.
 ##
-CXXFLAGS= -g -O0 -fno-omit-frame-pointer -Wall
+CXXFLAGS_DEBUG = -g -O0 -fno-omit-frame-pointer -Wall
+CXXFLAGS_FAST  = -O3 -march=native -mtune=native -fomit-frame-pointer -funroll-loops -DNDEBUG -Wall
+
+ifeq ($(MODE),fast)
+  CXXFLAGS = $(CXXFLAGS_FAST)
+else
+  CXXFLAGS = $(CXXFLAGS_DEBUG)
+endif
+
+SRC = FilterMain.cpp Filter.cpp cs1300bmp.cc
+HDR = cs1300bmp.h Filter.h rdtsc.h
+BIN = filter
 
 goals: filter judge
 	@echo "Done"
 
 filter: FilterMain.cpp Filter.cpp cs1300bmp.cc cs1300bmp.h Filter.h rdtsc.h
 	$(CXX) $(CXXFLAGS) -o filter FilterMain.cpp Filter.cpp cs1300bmp.cc
+
+
+$(BIN): $(SRC) $(HDR)
+	$(CXX) $(CXXFLAGS) -o $(BIN) $(SRC)
+
 
 ##
 ## Parameters for the test run
@@ -49,6 +65,20 @@ test:	filter
 	cmp filtered-gauss-boats.bmp tests/filtered-gauss-boats.bmp
 	cmp filtered-hline-blocks-small.bmp tests/filtered-hline-blocks-small.bmp
 	@echo All tests passed
+
+
+
+.PHONY: fast judge-fast test-fast clean
+
+fast:
+	$(MAKE) MODE=fast $(BIN)
+
+judge-fast:
+	$(MAKE) MODE=fast judge
+
+test-fast:
+	$(MAKE) MODE=fast test
+
 
 clean:
 	-rm -f *.o
