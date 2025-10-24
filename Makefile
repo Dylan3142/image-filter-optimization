@@ -9,6 +9,8 @@ CXX	=g++
 CXXFLAGS_DEBUG = -g -O0 -fno-omit-frame-pointer -Wall
 CXXFLAGS_FAST  = -O3 -march=native -mtune=native -fomit-frame-pointer -funroll-loops -DNDEBUG -Wall
 
+MODE ?= fast
+
 ifeq ($(MODE),fast)
   CXXFLAGS = $(CXXFLAGS_FAST)
 else
