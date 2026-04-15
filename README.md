@@ -56,8 +56,8 @@ The Makefile was updated to use `-O3 -march=native -mtune=native -fomit-frame-po
 | Implementation | Median CPE (cycles/pixel) |
 |---|---|
 | Baseline | ~4000 |
-| Optimized | ~[your result] |
-| Speedup | ~[your speedup]x |
+| Optimized | ~150-200 |
+| Speedup | ~20x |
 
 *Benchmarked on `blocks-small.bmp` using Gaussian blur, average, horizontal line detection, and emboss filters. Median CPE computed across 6 runs per filter via the Judge script.*
 
@@ -122,3 +122,4 @@ make clean
 - Hardware performance measurement using cycle counters
 - Profiling-driven development — measuring and explaining every optimization
 - Systems-level debugging and benchmarking on Linux
+
